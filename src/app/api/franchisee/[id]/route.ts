@@ -1,6 +1,7 @@
 export const dynamic = "force-dynamic";
+export const dynamicParams = true;
+
 import { NextRequest, NextResponse } from "next/server";
-import { createServiceClient } from "@/lib/supabase";
 
 export async function GET(
   request: NextRequest,
@@ -8,9 +9,13 @@ export async function GET(
 ) {
   try {
     const { id } = await params;
-    const supabase = createServiceClient();
+    
+    const { createClient } = await import("@supabase/supabase-js");
+    const supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY!
+    );
 
-    // Get franchisee
     const { data: franchisee, error: fError } = await supabase
       .from("franchisees")
       .select("*")
@@ -21,14 +26,12 @@ export async function GET(
       return NextResponse.json({ error: "Not found" }, { status: 404 });
     }
 
-    // Get assessments
     const { data: assessments } = await supabase
       .from("assessments")
       .select("id, report_type, visit_date, percentage, tier, critical_findings, positive_findings")
       .eq("franchisee_id", id)
       .order("visit_date", { ascending: false });
 
-    // Get letters
     const { data: letters } = await supabase
       .from("letters")
       .select("id, letter_type, status, created_at, content")

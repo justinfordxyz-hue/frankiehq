@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { ClerkProvider } from "@clerk/nextjs";
 import { DM_Sans, DM_Serif_Display } from "next/font/google";
 import "./globals.css";
 
@@ -17,15 +18,18 @@ const dmSerif = DM_Serif_Display({
 
 export const metadata: Metadata = {
   title: "Frankie — Your FBCs' Secret Weapon",
-  description: "Virtual Franchise Business Consultant Support Platform.",
+  description:
+    "Virtual Franchise Business Consultant Support Platform.",
 };
 
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${dmSans.variable} ${dmSerif.variable}`}>
-      <body className="antialiased">{children}</body>
-    </html>
+    <ClerkProvider>
+      <html lang="en" className={`${dmSans.variable} ${dmSerif.variable}`}>
+        <body className="antialiased">{children}</body>
+      </html>
+    </ClerkProvider>
   );
 }

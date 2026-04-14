@@ -24,7 +24,7 @@ export default function Home() {
             Try the Demo
           </Link>
           <Link
-            href="/dashboard"
+            href="/sign-in"
             className="px-6 py-3 border border-[#0e0433]/20 text-[#0e0433]/50 rounded-lg hover:border-[#10c3be] hover:text-[#10c3be] transition-all"
           >
             Sign In
